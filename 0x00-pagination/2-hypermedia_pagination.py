@@ -42,7 +42,10 @@ class Server:
         if start_index >= len(dataset):
             return []
         return dataset[start_index:end_index]
-    def get_hyper(self, page: int = 1, page_size: int = 10) -> Dict[str, Optional[Any]]:
+
+    def get_hyper(self, page: int = 1, page_size: int = 10) -> Dict[str,
+                                                                    Optional
+                                                                    [Any]]:
         """Return hypermedia pagination info"""
         data = self.get_page(page, page_size)
         total_size = len(self.dataset())
