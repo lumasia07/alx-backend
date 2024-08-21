@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Basic dictionary"""
-BaseCaching = __import__('base_caching').BaseCaching
+from base_caching import BaseCaching
 
 
 class BasicCache(BaseCaching):
@@ -17,6 +17,6 @@ class BasicCache(BaseCaching):
         """
         Retrieves value asscociated with key in cached_data
         """
-        if key is not None or key not in self.cache_data:
+        if key is None or key not in self.cache_data:
             return None
         return self.cache_data[key]
