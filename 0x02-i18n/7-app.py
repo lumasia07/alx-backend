@@ -2,6 +2,8 @@
 """Mock user login"""
 from flask import Flask, request, g, render_template
 from flask_babel import Babel, _
+import pytz
+from pytz.exceptions import UnknownTimeZoneError
 
 app = Flask(__name__)
 
@@ -30,6 +32,26 @@ def get_locale():
     
     return request.accept_languages.best_match(app.config['BABEL_SUPPORTED_LOCALES'])
 
+
+@babel.timezoneselector
+def get_timezone():
+    timezone = request.args.get('timezone')
+    
+    if timezone:
+        try:
+            return pytz.timezone(timezone).zone
+        except UnknownTimeZoneError:
+            pass
+    
+    if g.user and g.user.get('timezone'):
+        try:
+            return pytz.timezone(g.user['timezone']).zone
+        except UnknownTimeZoneError:
+            pass
+    
+    return 'UTC'
+
+
 def get_user():
     """Retrieve a user based on the login_as param"""
     try:
@@ -48,7 +70,7 @@ def before_request():
 @app.route('/')
 def index():
     """Render template"""
-    return render_template('6-index.html')
+    return render_template('7-index.html')
 
 
 if __name__ == '__main__':
